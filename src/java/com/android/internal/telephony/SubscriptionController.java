@@ -440,7 +440,8 @@ public class SubscriptionController extends ISub.Stub {
      */
     @Override
     public SubscriptionInfo getActiveSubscriptionInfoForIccId(String iccId, String callingPackage) {
-        if (!canReadPhoneState(callingPackage, "getActiveSubscriptionInfoForIccId")) {
+        if (!canReadPhoneState(callingPackage, "getActiveSubscriptionInfoForIccId") ||
+                iccId == null) {
             return null;
         }
 
@@ -451,7 +452,7 @@ public class SubscriptionController extends ISub.Stub {
                     mContext.getOpPackageName());
             if (subList != null) {
                 for (SubscriptionInfo si : subList) {
-                    if (si.getIccId() == iccId) {
+                    if (iccId.equals(si.getIccId())) {
                         if (DBG)
                             logd("[getActiveSubInfoUsingIccId]+ iccId=" + iccId + " subInfo=" + si);
                         return si;
